@@ -120,7 +120,7 @@ Example: `/players?team=Arsenal` will return all Arsenal players.
   }
   ```
 
-### 5. Deleting a Player
+### 5. Delete a Player
 **DELETE** `/players/{playerName}`
 
 Deletes a player by their name.
