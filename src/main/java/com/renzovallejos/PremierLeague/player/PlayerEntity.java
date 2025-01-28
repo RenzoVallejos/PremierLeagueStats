@@ -1,9 +1,8 @@
 package com.renzovallejos.PremierLeague.player;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.renzovallejos.PremierLeague.player.TeamEntity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "player_stats")
@@ -12,6 +11,11 @@ public class PlayerEntity {
     @Id
     @Column(name = "player_name", unique = true)
     private String playerName;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id") // This maps the foreign key in the Player table
+    @JsonBackReference
+    private TeamEntity team;
 
     @Column(name = "nation")
     private String nation;

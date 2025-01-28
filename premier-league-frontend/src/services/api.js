@@ -1,0 +1,21 @@
+import axios from "axios";
+
+const BASE_URL = "http://localhost:8081/api";
+
+export const fetchMatches = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/matches`);
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to fetch matches.");
+    }
+};
+
+export const addMatch = async (matchData) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/matches`, matchData);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data || "Failed to add match.");
+    }
+};
