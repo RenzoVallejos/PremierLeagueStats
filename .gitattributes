@@ -1,0 +1,13 @@
+# Exclude dependencies and build directories
+node_modules/* linguist-vendored
+target/* linguist-vendored
+# Exclude Python files if they are not core to your project
+*.py linguist-vendored
+# Classify Java files as Java
+*.java linguist-language=Java
+# Classify JavaScript files as JavaScript
+*.js linguist-language=JavaScript
+# Optionally classify other files
+*.jsx linguist-language=JavaScript
+*.css linguist-language=CSS
+
