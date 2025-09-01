@@ -56,24 +56,42 @@ public class PlayerService {
         return playerRepository.save(player);
     }
     public PlayerEntity updatePlayer(PlayerEntity playertoupdate) {
-        Optional<PlayerEntity> existingplayer = playerRepository.findByPlayerName(playertoupdate.getPlayerName());
+        // Clean up playerName (remove leading/trailing spaces)
+        String cleanName = playertoupdate.getPlayerName().trim();
+
+        Optional<PlayerEntity> existingplayer = playerRepository.findByPlayerName(cleanName);
         if (existingplayer.isEmpty()) {
-            throw new ResourceNotFoundException("No players found with name: " + playertoupdate.getPlayerName());
-        }
-        else {
-           PlayerEntity updatedPlayer = existingplayer.get();
-           updatedPlayer.setPlayerName(playertoupdate.getPlayerName());
-           updatedPlayer.setPosition(playertoupdate.getPosition());
-           updatedPlayer.setNation(playertoupdate.getNation());
-           updatedPlayer.setTeamName(playertoupdate.getTeamName());
-            playerRepository.save(updatedPlayer);
-            return updatedPlayer;
+            throw new ResourceNotFoundException("No players found with name: " + cleanName);
+        } else {
+            PlayerEntity updatedPlayer = existingplayer.get();
+
+            // Update fields
+            updatedPlayer.setPlayerName(cleanName); // ensure name stored is also trimmed
+            updatedPlayer.setPosition(playertoupdate.getPosition());
+            updatedPlayer.setNation(playertoupdate.getNation());
+            updatedPlayer.setTeamName(playertoupdate.getTeamName());
+            updatedPlayer.setAge(playertoupdate.getAge());
+            updatedPlayer.setGoals(playertoupdate.getGoals());
+            updatedPlayer.setAssists(playertoupdate.getAssists());
+            updatedPlayer.setMatchesPlayed(playertoupdate.getMatchesPlayed());
+            updatedPlayer.setStarts(playertoupdate.getStarts());
+            updatedPlayer.setMinutesPlayed(playertoupdate.getMinutesPlayed());
+            updatedPlayer.setPenaltiesScored(playertoupdate.getPenaltiesScored());
+            updatedPlayer.setYellowCards(playertoupdate.getYellowCards());
+            updatedPlayer.setRedCards(playertoupdate.getRedCards());
+            updatedPlayer.setExpectedGoals(playertoupdate.getExpectedGoals());
+            updatedPlayer.setExpectedAssists(playertoupdate.getExpectedAssists());
+
+            return playerRepository.save(updatedPlayer);
         }
     }
 
+
+
     @Transactional
     public void deletePlayer(String playerName) {
-         playerRepository.deleteByPlayerName(playerName);
+
+        playerRepository.deleteByPlayerName(playerName.trim());
     }
 
 }

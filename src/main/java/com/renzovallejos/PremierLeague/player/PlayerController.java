@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller // Use @Controller instead of @RestController to work with Thymeleaf
+@RestController // Use @Controller instead of @RestController to work with Thymeleaf
 @RequestMapping(path = "players")
 @CrossOrigin(origins = "http://localhost:3000")
 
@@ -23,35 +23,26 @@ public class PlayerController {
 
     // This method handles GET requests and returns a Thymeleaf template
     @GetMapping
-    public String getPlayers(@RequestParam(required = false) String name,
-                             @RequestParam(required = false) String team,
-                             @RequestParam(required = false) String position,
-                             @RequestParam(required = false) String nation,
-                             Model model) {
-        List<PlayerEntity> players;
+    public List<PlayerEntity> getPlayers(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String team,
+            @RequestParam(required = false) String position,
+            @RequestParam(required = false) String nation) {
 
-        // Filtering logic based on request parameters
         if (team != null && position != null) {
-            players = playerService.getPlayersByTeamAndPosition(team, position);
+            return playerService.getPlayersByTeamAndPosition(team, position);
         } else if (team != null) {
-            players = playerService.getPlayersFromTeam(team);
+            return playerService.getPlayersFromTeam(team);
         } else if (position != null) {
-            players = playerService.getPlayersByPosition(position);
+            return playerService.getPlayersByPosition(position);
         } else if (name != null) {
-            players = playerService.getPlayersByName(name);
+            return playerService.getPlayersByName(name);
         } else if (nation != null) {
-            players = playerService.getPlayersByNation(nation);
+            return playerService.getPlayersByNation(nation);
         } else {
-            players = playerService.getAllPlayers();
+            return playerService.getAllPlayers();
         }
-
-        // Add the list of players to the model to pass to the Thymeleaf view
-        model.addAttribute("players", players);
-
-        // Return the name of the Thymeleaf template to be rendered (without .html)
-        return "playerList";
     }
-
     // This method handles adding a new player using POST
     @PostMapping
     public ResponseEntity<PlayerEntity> addPlayer(@RequestBody PlayerEntity player) {
