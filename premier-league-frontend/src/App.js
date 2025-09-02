@@ -1,66 +1,26 @@
-import React, { useEffect, useState } from "react";
-import MatchesList from "./MatchesList";
-import MatchForm from "./MatchForm";
-import PlayersList from "./PlayerList";
-import PlayerForm from "./PlayerForm";
+import React, { useState } from "react";
+import CustomApp from "./CustomApp";
+import LiveApp from "./LiveApp";
 
 const App = () => {
-    const [players, setPlayers] = useState([]);
-
-    // Fetch players from backend
-    const fetchPlayers = async () => {
-        const response = await fetch("http://localhost:8081/players");
-        const data = await response.json();
-        setPlayers(data);
-    };
-
-    useEffect(() => {
-        fetchPlayers();
-    }, []);
-
-    // Add player
-    const addPlayer = async (player) => {
-        const response = await fetch("http://localhost:8081/players", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(player),
-        });
-        if (response.ok) {
-            await fetchPlayers(); // refresh list
-        }
-    };
-
-    // Update player
-    const updatePlayer = async (player) => {
-        const response = await fetch("http://localhost:8081/players", {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(player),
-        });
-        if (response.ok) {
-            await fetchPlayers(); // refresh list
-        }
-    };
-
-    // Delete player
-    const deletePlayer = async (playerName) => {
-        await fetch(`http://localhost:8081/players/${playerName}`, {
-            method: "DELETE",
-        });
-        await fetchPlayers(); // refresh list
-    };
+    const [view, setView] = useState("live"); // default to Live API
 
     return (
         <div>
             <h1>Premier League App</h1>
 
-            <h2>Add Match</h2>
-            <MatchForm />
-            <MatchesList />
+            {/* Toggle buttons */}
+            <div>
+                <button onClick={() => setView("live")} disabled={view === "live"}>
+                    Live (API)
+                </button>
+                <button onClick={() => setView("custom")} disabled={view === "custom"}>
+                    Custom (Postgres)
+                </button>
+            </div>
 
-            <h2>Players</h2>
-            <PlayerForm onAdd={addPlayer} onUpdate={updatePlayer} />
-            <PlayersList players={players} onDelete={deletePlayer} />
+            {/* Render correct app */}
+            {view === "custom" ? <CustomApp/> : <LiveApp/>}
         </div>
     );
 };

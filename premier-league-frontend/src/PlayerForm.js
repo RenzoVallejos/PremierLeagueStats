@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function PlayerForm({ onAdd, onUpdate }) {
+function PlayerForm({ onAdd, onUpdate, status }) {
     const [form, setForm] = useState({
         playerName: "",
         teamName: "",
@@ -41,6 +41,9 @@ function PlayerForm({ onAdd, onUpdate }) {
                 <button onClick={handleAdd}>Add Player</button>
                 <button onClick={handleUpdate}>Update Player</button>
             </form>
+
+            {/* show status under form */}
+            {status && <p style={{ marginTop: "10px", color: "green" }}>{status}</p>}
         </div>
     );
 }

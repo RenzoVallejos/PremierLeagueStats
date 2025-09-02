@@ -21,7 +21,7 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-    // This method handles GET requests and returns a Thymeleaf template
+
     @GetMapping
     public List<PlayerEntity> getPlayers(
             @RequestParam(required = false) String name,
