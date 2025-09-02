@@ -18,13 +18,16 @@ const PlayerList = ({ players, onDelete, liveMode = false }) => {
             <tbody>
             {players.map((player, index) => (
                 <tr key={index}>
+                    {/* Player name */}
                     <td>{player.playerName}</td>
+
+                    {/* Team name with crest if available */}
                     <td>
-                        {liveMode && player.team?.crest ? (
+                        {liveMode && player.teamCrest ? (
                             <>
                                 <img
-                                    src={player.team.crest}
-                                    alt={player.team.name}
+                                    src={player.teamCrest}
+                                    alt={player.teamName}
                                     style={{
                                         width: "25px",
                                         height: "25px",
@@ -32,17 +35,21 @@ const PlayerList = ({ players, onDelete, liveMode = false }) => {
                                         verticalAlign: "middle",
                                     }}
                                 />
-                                {player.team.name}
+                                {player.teamName}
                             </>
                         ) : (
                             player.teamName
                         )}
                     </td>
+
+                    {/* Other info */}
                     <td>{player.position ?? "N/A"}</td>
                     <td>{player.nation}</td>
                     <td>{player.age ?? "N/A"}</td>
                     <td>{player.goals}</td>
                     <td>{player.assists}</td>
+
+                    {/* Delete only for custom mode */}
                     {!liveMode && (
                         <td>
                             <button onClick={() => onDelete(player.playerName)}>

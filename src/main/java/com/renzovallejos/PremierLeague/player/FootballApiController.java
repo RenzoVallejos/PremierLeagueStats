@@ -3,6 +3,8 @@ package com.renzovallejos.PremierLeague.player;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -15,8 +17,8 @@ public class FootballApiController {
     }
 
     @GetMapping("/live-scorers")
-    public ResponseEntity<String> getLiveScorers() {
-        String json = footballApiService.getTopScorers();
-        return ResponseEntity.ok(json);
+    public ResponseEntity<List<PlayerDTO>> getLiveScorers() {
+        List<PlayerDTO> players = footballApiService.getTopScorers();
+        return ResponseEntity.ok(players);
     }
 }
