@@ -1,39 +1,67 @@
 import React, { useEffect, useState } from "react";
 import PlayerList from "./PlayerList";
+import StandingsList from "./StandingsList";
 
 const LiveApp = () => {
     const [players, setPlayers] = useState([]);
+    const [standings, setStandings] = useState([]);
     const [status, setStatus] = useState("");
+    const [view, setView] = useState("scorers"); // default tab
 
-    // Fetch live scorers from backend (already normalized in Spring Boot)
+    // Fetch live scorers
     const fetchLivePlayers = async () => {
         try {
             const response = await fetch("http://localhost:8081/api/live-scorers");
-            if (!response.ok) {
-                throw new Error("Failed to fetch live data");
-            }
             const data = await response.json();
             setPlayers(data);
-            setStatus(" Live API data loaded!");
         } catch (err) {
-            console.error("Error fetching live data:", err);
-            setStatus("❌ Failed to fetch live data.");
+            setStatus("❌ Failed to fetch live scorers.");
+        }
+    };
+
+    // Fetch league standings
+    const fetchStandings = async () => {
+        try {
+            const response = await fetch("http://localhost:8081/api/standings");
+            const data = await response.json();
+            setStandings(data);
+        } catch (err) {
+            setStatus("❌ Failed to fetch standings.");
         }
     };
 
     useEffect(() => {
-        fetchLivePlayers();
-    }, []);
+        if (view === "scorers") {
+            fetchLivePlayers();
+        } else if (view === "standings") {
+            fetchStandings();
+        }
+    }, [view]);
 
     return (
         <div>
-            <h2>Live Top Scorers (API)</h2>
+            <h2>Live Premier League Data (API)</h2>
             <p>{status}</p>
 
-            {/* PlayerList is reused (no delete button in live mode) */}
-            <PlayerList players={players} liveMode={true} />
+            {/* Toggle buttons */}
+            <div>
+                <button onClick={() => setView("scorers")} disabled={view === "scorers"}>
+                    Top Scorers
+                </button>
+                <button onClick={() => setView("standings")} disabled={view === "standings"}>
+                    Standings
+                </button>
+            </div>
+
+            {/* Render based on tab */}
+            {view === "scorers" ? (
+                <PlayerList players={players} liveMode={true} />
+            ) : (
+                <StandingsList standings={standings} />
+            )}
         </div>
     );
 };
 
 export default LiveApp;
+

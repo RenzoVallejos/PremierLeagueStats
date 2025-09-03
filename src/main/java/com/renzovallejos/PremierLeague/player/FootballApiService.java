@@ -88,4 +88,46 @@ public class FootballApiService {
             return List.of(); // return empty list if error
         }
     }
+public List<StandingsDTO> getStandings() {
+    try {
+        var headers = new org.springframework.http.HttpHeaders();
+        headers.set("X-Auth-Token", API_TOKEN);
+        var entity = new org.springframework.http.HttpEntity<>(headers);
+
+        var response = restTemplate.exchange(
+                "https://api.football-data.org/v4/competitions/PL/standings",
+                org.springframework.http.HttpMethod.GET,
+                entity,
+                String.class
+        );
+
+        JsonNode root = objectMapper.readTree(response.getBody());
+        JsonNode table = root.get("standings").get(0).get("table");
+
+        List<StandingsDTO> standings = new ArrayList<>();
+        for (JsonNode t : table) {
+            int position = t.get("position").asInt();
+            String teamName = t.get("team").get("name").asText();
+            String crest = t.get("team").get("crest").asText();
+            int playedGames = t.get("playedGames").asInt();
+            int won = t.get("won").asInt();
+            int draw = t.get("draw").asInt();
+            int lost = t.get("lost").asInt();
+            int points = t.get("points").asInt();
+            int goalsFor = t.get("goalsFor").asInt();
+            int goalsAgainst = t.get("goalsAgainst").asInt();
+            int goalDifference = t.get("goalDifference").asInt();
+
+            standings.add(new StandingsDTO(position, teamName, crest,
+                    playedGames, won, draw, lost, points,
+                    goalsFor, goalsAgainst, goalDifference));
+        }
+        return standings;
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        return List.of();
+    }
+}
+
 }
