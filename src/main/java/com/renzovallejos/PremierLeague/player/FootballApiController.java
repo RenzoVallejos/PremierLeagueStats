@@ -25,6 +25,12 @@ public class FootballApiController {
    public ResponseEntity<List<StandingsDTO>> getStandings() {
        List<StandingsDTO> standings = footballApiService.getStandings();
        return ResponseEntity.ok(standings);
-    } 
+    }
+
+    @GetMapping("/live-matches")
+    public ResponseEntity<List<MatchDTO>> getLiveMatches() {
+        List<MatchDTO> matches = footballApiService.getMatches();
+        return ResponseEntity.ok(matches);
+    }
 
 }
