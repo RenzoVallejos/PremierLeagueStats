@@ -18,9 +18,10 @@ public class FootballApiService {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    public FootballApiService() {
-        this.restTemplate = new RestTemplate();
-        this.objectMapper = new ObjectMapper();
+    //  Constructor injection: easier to mock in tests
+    public FootballApiService(RestTemplate restTemplate, ObjectMapper objectMapper) {
+        this.restTemplate = restTemplate;
+        this.objectMapper = objectMapper;
     }
 
     // ================================
