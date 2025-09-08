@@ -19,7 +19,7 @@
     <description>A spring boot app for a premier league website</description>
 
     <properties>
-        <java.version>20</java.version>
+        <java.version>21</java.version>
     </properties>
 
     <dependencies>
