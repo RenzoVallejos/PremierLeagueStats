@@ -1,28 +1,21 @@
-# Use OpenJDK 21
-FROM openjdk:21-jdk-slim
+# -------- Stage 1: Build --------
+FROM openjdk:21-jdk-slim AS build
 
-# Set working directory
 WORKDIR /app
-
-# Copy Maven wrapper and project files
 COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
 COPY src src
 
-# Give permissions to mvnw
 RUN chmod +x mvnw
-
-# Build the app (skip tests for faster build)
 RUN ./mvnw clean package -DskipTests
 
-# Copy the built jar (adjust name if needed)
-# This assumes your jar ends up in target/
-COPY target/*.jar app.jar
+# -------- Stage 2: Run --------
+FROM openjdk:21-jdk-slim
 
-# Expose port 8080
+WORKDIR /app
+# copy the jar built in the first stage
+COPY --from=build /app/target/*.jar app.jar
+
 EXPOSE 8080
-
-# Run the jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
