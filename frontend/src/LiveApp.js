@@ -19,7 +19,7 @@ import PlayerList from "./PlayerList";
 import StandingsList from "./StandingsList";
 import MatchesListLive from "./MatchesListLive";
 
-const BASE_URL = process.env.REACT_APP_API_URL_LIVE || "http://localhost:8081/api";
+const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8081/api";
 
 const LiveApp = () => {
     const [players, setPlayers] = useState([]);
