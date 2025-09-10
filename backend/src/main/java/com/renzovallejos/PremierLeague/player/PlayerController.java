@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController // Use @Controller instead of @RestController to work with Thymeleaf
 @RequestMapping(path = "players")
-@CrossOrigin(origins = "http://localhost:3000")
 
 public class PlayerController {
     private final PlayerService playerService;
