@@ -1,6 +1,7 @@
 # PremierLeague – Full Stack Application  
 
 This is a full-stack web application for managing Premier League player statistics.  
+Live on: https://premier-league-stats-pi.vercel.app
 - **Backend**: Spring Boot (REST API + PostgreSQL)  
 - **Frontend**: React (web interface)  
 
@@ -37,7 +38,5 @@ It allows users to view, add, update, and delete player information.
 
 ## Instructions
 - Clone the repository
-- Run PremierLeagueApplication.java directly from your editor
-- Navigate into the frontend directory and run npm install:
-- The app will be available at http://localhost:3000
+- The app will be available at https://premier-league-stats-pi.vercel.app
 
