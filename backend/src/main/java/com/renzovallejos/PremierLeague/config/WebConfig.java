@@ -23,9 +23,10 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins(
-                                "http://localhost:3000",  // for local React dev
-                                "https://premier-league-stats.vercel.app" // your Vercel frontend
+                        .allowedOriginPatterns(
+                                "http://localhost:3000",  // local dev
+                                "https://premier-league-stats.vercel.app", // production domain (if you add custom)
+                                "https://*.vercel.app" // all preview + project builds
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");
