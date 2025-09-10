@@ -4,7 +4,7 @@ import MatchForm from "./MatchForm";
 import PlayerList from "./PlayerList";
 import PlayerForm from "./PlayerForm";
 
-const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8081";
+const BASE_URL = process.env.REACT_APP_API_URL_CUSTOM || "http://localhost:8081";
 
 const CustomApp = () => {
     const [players, setPlayers] = useState([]);
