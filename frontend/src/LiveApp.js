@@ -19,6 +19,8 @@ import PlayerList from "./PlayerList";
 import StandingsList from "./StandingsList";
 import MatchesListLive from "./MatchesListLive";
 
+const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8081";
+
 const LiveApp = () => {
     const [players, setPlayers] = useState([]);
     const [standings, setStandings] = useState([]);
@@ -29,7 +31,7 @@ const LiveApp = () => {
     // Fetch live scorers
     const fetchLivePlayers = async () => {
         try {
-            const response = await fetch("http://localhost:8081/api/live-scorers");
+            const response = await fetch(`${BASE_URL}/api/live-scorers`);
             const data = await response.json();
             setPlayers(data);
         } catch (err) {
@@ -40,7 +42,7 @@ const LiveApp = () => {
     // Fetch league standings
     const fetchStandings = async () => {
         try {
-            const response = await fetch("http://localhost:8081/api/standings");
+            const response = await fetch(`${BASE_URL}/api/standings`);
             const data = await response.json();
             setStandings(data);
         } catch (err) {
@@ -51,7 +53,7 @@ const LiveApp = () => {
     // Fetch live matches
     const fetchMatches = async () => {
         try {
-            const response = await fetch("http://localhost:8081/api/live-matches");
+            const response = await fetch(`${BASE_URL}/api/live-matches`);
             const data = await response.json();
             setMatches(data);
         } catch (err) {

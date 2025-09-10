@@ -4,13 +4,15 @@ import MatchForm from "./MatchForm";
 import PlayerList from "./PlayerList";
 import PlayerForm from "./PlayerForm";
 
+const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8081";
+
 const CustomApp = () => {
     const [players, setPlayers] = useState([]);
     const [status, setStatus] = useState("");
 
     // Fetch players from backend
     const fetchPlayers = async () => {
-        const response = await fetch("http://localhost:8081/players");
+        const response = await fetch(`${BASE_URL}/players`);
         const data = await response.json();
         setPlayers(data);
     };
@@ -21,44 +23,44 @@ const CustomApp = () => {
 
     // Add player
     const addPlayer = async (player) => {
-        const response = await fetch("http://localhost:8081/players", {
+        const response = await fetch(`${BASE_URL}/players`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(player),
         });
         if (response.ok) {
-            setStatus(` Player "${player.playerName}" added successfully!`);
+            setStatus(`✅ Player "${player.playerName}" added successfully!`);
             await fetchPlayers();
         } else {
-            setStatus(`❌ Failed to add player.`);
+            setStatus(` Failed to add player.`);
         }
     };
 
     // Update player
     const updatePlayer = async (player) => {
-        const response = await fetch("http://localhost:8081/players", {
+        const response = await fetch(`${BASE_URL}/players`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(player),
         });
         if (response.ok) {
-            setStatus(` Player "${player.playerName}" updated successfully!`);
+            setStatus(`✅ Player "${player.playerName}" updated successfully!`);
             await fetchPlayers();
         } else {
-            setStatus(`❌ Failed to update player "${player.playerName}".`);
+            setStatus(` Failed to update player "${player.playerName}".`);
         }
     };
 
     // Delete player
     const deletePlayer = async (playerName) => {
-        const response = await fetch(`http://localhost:8081/players/${playerName}`, {
+        const response = await fetch(`${BASE_URL}/players/${playerName}`, {
             method: "DELETE",
         });
         if (response.ok) {
-            setStatus(` Player "${playerName}" deleted successfully!`);
+            setStatus(`✅ Player "${playerName}" deleted successfully!`);
             await fetchPlayers();
         } else {
-            setStatus(`❌ Failed to delete player "${playerName}".`);
+            setStatus(` Failed to delete player "${playerName}".`);
         }
     };
 
