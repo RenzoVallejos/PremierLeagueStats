@@ -53,6 +53,8 @@ public class PlayerService {
     }
 
     public PlayerEntity addPlayer(PlayerEntity player) {
+        // Trim player name before saving
+        player.setPlayerName(player.getPlayerName().trim());
         return playerRepository.save(player);
     }
     public PlayerEntity updatePlayer(PlayerEntity playertoupdate) {
