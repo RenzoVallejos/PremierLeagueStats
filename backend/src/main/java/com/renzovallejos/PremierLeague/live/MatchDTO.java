@@ -1,4 +1,4 @@
-package com.renzovallejos.PremierLeague.player;
+package com.renzovallejos.PremierLeague.custom;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

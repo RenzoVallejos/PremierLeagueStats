@@ -1,4 +1,4 @@
-package com.renzovallejos.PremierLeague.player;
+package com.renzovallejos.PremierLeague.custom;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

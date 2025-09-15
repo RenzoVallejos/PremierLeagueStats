@@ -1,4 +1,4 @@
-package com.renzovallejos.PremierLeague.player;
+package com.renzovallejos.PremierLeague.custom;
 
 public class ResourceNotFoundException extends RuntimeException{
     public ResourceNotFoundException(String message){

@@ -1,7 +1,6 @@
-package com.renzovallejos.PremierLeague.player;
+package com.renzovallejos.PremierLeague.custom;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 

@@ -1,5 +1,7 @@
-package com.renzovallejos.PremierLeague.player;
+package com.renzovallejos.PremierLeague.custom;
 
+import com.renzovallejos.PremierLeague.custom.match.MatchEntity;
+import com.renzovallejos.PremierLeague.custom.match.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,8 @@
-package com.renzovallejos.PremierLeague.player;
+package com.renzovallejos.PremierLeague.custom;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.renzovallejos.PremierLeague.custom.match.MatchEntity;
+import com.renzovallejos.PremierLeague.custom.player.PlayerEntity;
 import jakarta.persistence.*;
 
 

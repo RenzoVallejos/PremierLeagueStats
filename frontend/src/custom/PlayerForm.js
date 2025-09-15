@@ -1,3 +1,10 @@
+/**
+ * PlayerForm.js
+ *
+ * Form component for managing **Custom players** (Postgres DB).
+ * - Allows adding new players or updating existing ones.
+ * - Not used for Live API players (since they cannot be modified).
+ */
 import React, { useState } from "react";
 
 function PlayerForm({ onAdd, onUpdate, status }) {

@@ -1,3 +1,17 @@
+/**
+ * PlayerList.js
+ *
+ * Displays a table of players.
+ * - Used for both Custom (editable) and Live (read-only) modes.
+ *
+ * Custom mode:
+ *   - Shows all player info.
+ *   - Includes a Delete button.
+ *
+ * Live mode:
+ *   - Displays team crest images if available.
+ *   - Hides the Delete button (read-only).
+ */
 import React from "react";
 
 const PlayerList = ({ players, onDelete, liveMode = false }) => {
