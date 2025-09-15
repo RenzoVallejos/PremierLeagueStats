@@ -1,4 +1,4 @@
-package com.renzovallejos.PremierLeague.custom;
+package com.renzovallejos.PremierLeague.custom.team;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.renzovallejos.PremierLeague.custom.match.MatchEntity;

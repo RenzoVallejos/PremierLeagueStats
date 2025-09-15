@@ -1,4 +1,4 @@
-package com.renzovallejos.PremierLeague.custom;
+package com.renzovallejos.PremierLeague.custom.match;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

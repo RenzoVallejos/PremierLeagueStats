@@ -1,5 +1,6 @@
-package com.renzovallejos.PremierLeague.custom;
+package com.renzovallejos.PremierLeague.custom.team;
 
+import com.renzovallejos.PremierLeague.custom.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

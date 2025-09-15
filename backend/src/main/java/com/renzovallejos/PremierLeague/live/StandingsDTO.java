@@ -1,4 +1,4 @@
-package com.renzovallejos.PremierLeague.custom;
+package com.renzovallejos.PremierLeague.live;
 
 public class StandingsDTO {
     private int position;

@@ -1,5 +1,11 @@
+/**
+ * Fetches and displays a list of matches from the backend API.
+ * - Loads matches on mount using fetchMatches().
+ * - Handles and shows errors if fetch fails.
+ * - Renders a list of match details or a "no matches" message.
+ */
 import React, { useEffect, useState } from "react";
-import { fetchMatches } from "./services/api";
+import { fetchMatches } from "./CustomApi";
 
 
 const MatchesList = () => {

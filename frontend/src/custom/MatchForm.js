@@ -1,5 +1,11 @@
+/**
+ * Provides a form to add new matches to the backend.
+ * - Validates input (teams cannot be the same).
+ * - Submits match data using addMatch().
+ * - Resets form on success and shows errors if any occur.
+ */
 import React, { useState } from "react";
-import { addMatch } from "./services/api";
+import { addMatch } from "./CustomApi";
 
 const MatchForm = () => {
     const [formData, setFormData] = useState({

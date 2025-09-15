@@ -1,4 +1,4 @@
-package com.renzovallejos.PremierLeague.custom;
+package com.renzovallejos.PremierLeague.live;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

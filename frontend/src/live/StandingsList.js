@@ -1,3 +1,11 @@
+/**
+ * StandingsList.js
+ *
+ * Displays the league standings table (e.g., Premier League).
+ * - Shows each team’s position, crest, and basic stats.
+ * - Receives standings data as a prop (array of team objects).
+ * - Read-only display, no CRUD operations.
+ */
 import React from "react";
 
 const StandingsList = ({ standings }) => {
@@ -50,4 +58,3 @@ const StandingsList = ({ standings }) => {
 };
 
 export default StandingsList;
-

@@ -15,7 +15,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import PlayerList from "./PlayerList";
+import PlayerList from "../custom/PlayerList";
 import StandingsList from "./StandingsList";
 import MatchesListLive from "./MatchesListLive";
 

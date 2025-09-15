@@ -1,3 +1,10 @@
+/**
+ * CustomApi Module
+ *
+ * Provides API helper functions for working with matches.
+ * Handles communication with the backend using Axios.
+ * Includes functions for fetching all matches and adding a new match.
+ */
 import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8081/api";

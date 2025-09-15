@@ -3,6 +3,8 @@
  *
  * This component displays live, upcoming, and past Premier League matches
  * fetched from the backend (MatchDTO).
+ * Unlike Custom matches (which require forms & API calls for CRUD),
+ * this only displays matches passed in as props — no editing.
  *
  * Features:
  * - Shows match date and time (localized to user’s system).

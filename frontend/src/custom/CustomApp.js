@@ -1,3 +1,23 @@
+/**
+ * This component is the main container for managing custom players and matches
+ * stored in the Postgres database through the Spring Boot backend.
+ *
+ * Features:
+ * - Fetches all players from the backend on initial load.
+ * - Provides functionality to:
+ *   - Add new players (POST /players).
+ *   - Update existing players (PUT /players).
+ *   - Delete players by name (DELETE /players/{playerName}).
+ * - Displays:
+ *   - A form to add new matches (MatchForm).
+ *   - A list of matches (MatchesList).
+ *   - A form to add/update players (PlayerForm).
+ *   - A list of players with delete options (PlayerList).
+ *
+ * API Base URL:
+ * - Uses REACT_APP_API_URL_CUSTOM (env variable).
+ * - Falls back to http://localhost:8081 if not provided.
+ */
 import React, { useEffect, useState } from "react";
 import MatchesList from "./MatchesList";
 import MatchForm from "./MatchForm";

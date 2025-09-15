@@ -1,4 +1,4 @@
-package com.renzovallejos.PremierLeague.custom;
+package com.renzovallejos.PremierLeague.live;
 /* Football API returns messy JSON (nested objects, extra fields).
 
 DTO lets us grab only the fields we care about (name, team, crest, goals, assists, etc.)
