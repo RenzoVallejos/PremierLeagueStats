@@ -2,58 +2,109 @@
  * StandingsList.js
  *
  * Displays the league standings table (e.g., Premier League).
- * - Shows each team’s position, crest, and basic stats.
- * - Receives standings data as a prop (array of team objects).
- * - Read-only display, no CRUD operations.
+ * Styled with Tailwind for consistency with PlayerList and MatchesListLive.
+ * Highlights:
+ * - Top 5 → Champions League (bg-green-50)
+ * - 6th → Europa League (bg-yellow-50)
+ * - Bottom 3 (18th–20th) → Relegation (bg-red-50)
  */
 import React from "react";
 
 const StandingsList = ({ standings }) => {
+    // Decide row background based on position
+    const getRowStyle = (position) => {
+        if (position >= 1 && position <= 5) {
+            return "bg-green-50"; // Champions League
+        } else if (position === 6) {
+            return "bg-yellow-50"; // Europa League
+        } else if (position >= 18) {
+            return "bg-red-50"; // Relegation
+        }
+        return "";
+    };
+
     return (
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Pos</th>
-                    <th>Team</th>
-                    <th>Played</th>
-                    <th>W</th>
-                    <th>D</th>
-                    <th>L</th>
-                    <th>GF</th>
-                    <th>GA</th>
-                    <th>GD</th>
-                    <th>Points</th>
-                </tr>
-            </thead>
-            <tbody>
-                {standings.map((team, index) => (
-                    <tr key={index}>
-                        <td>{team.position}</td>
-                        <td>
-                            <img
-                                src={team.crest}
-                                alt={team.teamName}
-                                style={{
-                                    width: "25px",
-                                    height: "25px",
-                                    marginRight: "8px",
-                                    verticalAlign: "middle",
-                                }}
-                            />
-                            {team.teamName}
-                        </td>
-                        <td>{team.playedGames}</td>
-                        <td>{team.won}</td>
-                        <td>{team.draw}</td>
-                        <td>{team.lost}</td>
-                        <td>{team.goalsFor}</td>
-                        <td>{team.goalsAgainst}</td>
-                        <td>{team.goalDifference}</td>
-                        <td>{team.points}</td>
+        <div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                League Standings
+            </h3>
+
+            {/* Legend */}
+            <div className="flex gap-4 mb-4 text-sm">
+                <div className="flex items-center gap-2">
+                    <span className="w-4 h-4 bg-green-50 border border-green-200 rounded"></span>
+                    <span>Champions League (1st–5th)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <span className="w-4 h-4 bg-yellow-50 border border-yellow-200 rounded"></span>
+                    <span>Europa League (6th)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <span className="w-4 h-4 bg-red-50 border border-red-200 rounded"></span>
+                    <span>Relegation (18th–20th)</span>
+                </div>
+            </div>
+
+            <div className="overflow-x-auto rounded-lg shadow">
+                <table className="min-w-full border border-gray-200 bg-white">
+                    <thead className="bg-gray-100 text-gray-700 uppercase text-sm">
+                    <tr>
+                        <th className="px-4 py-2 text-left">Pos</th>
+                        <th className="px-4 py-2 text-left">Team</th>
+                        <th className="px-4 py-2 text-center">Played</th>
+                        <th className="px-4 py-2 text-center">W</th>
+                        <th className="px-4 py-2 text-center">D</th>
+                        <th className="px-4 py-2 text-center">L</th>
+                        <th className="px-4 py-2 text-center">GF</th>
+                        <th className="px-4 py-2 text-center">GA</th>
+                        <th className="px-4 py-2 text-center">GD</th>
+                        <th className="px-4 py-2 text-center">Points</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 text-gray-800">
+                    {standings.map((team, index) => (
+                        <tr
+                            key={index}
+                            className={`${getRowStyle(
+                                team.position
+                            )} hover:bg-gray-100`}
+                        >
+                            {/* Position */}
+                            <td className="px-4 py-2 font-medium text-gray-900">
+                                {team.position}
+                            </td>
+
+                            {/* Team with crest */}
+                            <td className="px-4 py-2 flex items-center gap-2">
+                                <img
+                                    src={team.crest}
+                                    alt={team.teamName}
+                                    className="w-6 h-6 object-contain"
+                                />
+                                {team.teamName}
+                            </td>
+
+                            {/* Stats */}
+                            <td className="px-4 py-2 text-center">{team.playedGames}</td>
+                            <td className="px-4 py-2 text-center text-green-600 font-semibold">
+                                {team.won}
+                            </td>
+                            <td className="px-4 py-2 text-center">{team.draw}</td>
+                            <td className="px-4 py-2 text-center text-red-600 font-semibold">
+                                {team.lost}
+                            </td>
+                            <td className="px-4 py-2 text-center">{team.goalsFor}</td>
+                            <td className="px-4 py-2 text-center">{team.goalsAgainst}</td>
+                            <td className="px-4 py-2 text-center">{team.goalDifference}</td>
+                            <td className="px-4 py-2 text-center font-bold text-indigo-600">
+                                {team.points}
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     );
 };
 

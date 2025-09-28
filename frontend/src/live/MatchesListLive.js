@@ -1,113 +1,100 @@
 /**
  * MatchesListLive.js
  *
- * This component displays live, upcoming, and past Premier League matches
- * fetched from the backend (MatchDTO).
- * Unlike Custom matches (which require forms & API calls for CRUD),
- * this only displays matches passed in as props — no editing.
- *
- * Features:
- * - Shows match date and time (localized to user’s system).
- * - Displays home and away teams with their crest images.
- * - Shows live/full-time scores (or "-" if not available yet).
- * - Includes match status (color-coded: LIVE, SCHEDULED, FINISHED).
- * - Normalizes API status: "TIMED" → "SCHEDULED".
- * - Adds fallback for missing crest images.
+ * Styled with Tailwind to match PlayerList’s modern UI.
  */
 
 import React from "react";
 
 const MatchesListLive = ({ matches }) => {
-
     // Normalize status values (map TIMED → SCHEDULED)
     const normalizeStatus = (status) => {
         if (status === "TIMED") return "SCHEDULED";
         return status;
     };
 
-    // Status colors
-    const getStatusStyle = (status) => {
+    // Status colors with Tailwind classes
+    const getStatusClass = (status) => {
         switch (status) {
             case "LIVE":
-                return { color: "green", fontWeight: "bold" };
+                return "text-green-600 font-bold";
             case "FINISHED":
-                return { color: "red", fontWeight: "bold" };
+                return "text-red-600 font-bold";
             case "SCHEDULED":
-                return { color: "blue", fontWeight: "bold" };
+                return "text-blue-600 font-bold";
             default:
-                return { color: "gray", fontWeight: "bold" };
+                return "text-gray-500 font-bold";
         }
     };
 
     return (
         <div>
-            <h3>Premier League Matches</h3>
-            <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%" }}>
-                <thead style={{ backgroundColor: "#f2f2f2" }}>
-                <tr>
-                    <th>Date</th>
-                    <th>Home</th>
-                    <th>Score</th>
-                    <th>Away</th>
-                    <th>Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                {matches.map((match) => {
-                    const status = normalizeStatus(match.status);
-                    return (
-                        <tr key={match.id}>
-                            {/* Match Date & Time */}
-                            <td>
-                                {new Date(match.utcDate).toLocaleDateString()}{" "}
-                                {new Date(match.utcDate).toLocaleTimeString([], {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                })}
-                            </td>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                Premier League Matches
+            </h3>
 
-                            {/* Home Team */}
-                            <td>
-                                <img
-                                    src={match.homeTeamCrest}
-                                    alt={match.homeTeamName}
-                                    style={{
-                                        width: "25px",
-                                        marginRight: "8px",
-                                        verticalAlign: "middle",
-                                    }}
-                                />
-                                {match.homeTeamName}
-                            </td>
+            <div className="overflow-x-auto rounded-lg shadow">
+                <table className="min-w-full border border-gray-200 bg-white">
+                    <thead className="bg-gray-100 text-gray-700 uppercase text-sm">
+                    <tr>
+                        <th className="px-4 py-2 text-left">Date</th>
+                        <th className="px-4 py-2 text-left">Home</th>
+                        <th className="px-4 py-2 text-center">Score</th>
+                        <th className="px-4 py-2 text-left">Away</th>
+                        <th className="px-4 py-2 text-center">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 text-gray-800">
+                    {matches.map((match) => {
+                        const status = normalizeStatus(match.status);
+                        return (
+                            <tr key={match.id} className="hover:bg-gray-50">
+                                {/* Match Date & Time */}
+                                <td className="px-4 py-2 whitespace-nowrap">
+                                    {new Date(match.utcDate).toLocaleDateString()}{" "}
+                                    {new Date(match.utcDate).toLocaleTimeString([], {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                    })}
+                                </td>
 
-                            {/* Score */}
-                            <td style={{ textAlign: "center", fontWeight: "bold" }}>
-                                {match.homeScore !== null && match.awayScore !== null
-                                    ? `${match.homeScore} - ${match.awayScore}`
-                                    : "-"}
-                            </td>
+                                {/* Home Team */}
+                                <td className="px-4 py-2 flex items-center gap-2">
+                                    <img
+                                        src={match.homeTeamCrest}
+                                        alt={match.homeTeamName}
+                                        className="w-6 h-6 object-contain"
+                                    />
+                                    {match.homeTeamName}
+                                </td>
 
-                            {/* Away Team */}
-                            <td>
-                                <img
-                                    src={match.awayTeamCrest}
-                                    alt={match.awayTeamName}
-                                    style={{
-                                        width: "25px",
-                                        marginRight: "8px",
-                                        verticalAlign: "middle",
-                                    }}
-                                />
-                                {match.awayTeamName}
-                            </td>
+                                {/* Score */}
+                                <td className="px-4 py-2 text-center font-bold">
+                                    {match.homeScore !== null && match.awayScore !== null
+                                        ? `${match.homeScore} - ${match.awayScore}`
+                                        : "-"}
+                                </td>
 
-                            {/* Status (normalized + color-coded) */}
-                            <td style={getStatusStyle(status)}>{status}</td>
-                        </tr>
-                    );
-                })}
-                </tbody>
-            </table>
+                                {/* Away Team */}
+                                <td className="px-4 py-2 flex items-center gap-2">
+                                    <img
+                                        src={match.awayTeamCrest}
+                                        alt={match.awayTeamName}
+                                        className="w-6 h-6 object-contain"
+                                    />
+                                    {match.awayTeamName}
+                                </td>
+
+                                {/* Status */}
+                                <td className={`px-4 py-2 text-center ${getStatusClass(status)}`}>
+                                    {status}
+                                </td>
+                            </tr>
+                        );
+                    })}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };
