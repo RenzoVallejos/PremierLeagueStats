@@ -73,31 +73,59 @@ const LiveApp = () => {
     }, [view]);
 
     return (
-        <div>
-            <h2>Live Premier League Data (API)</h2>
-            <p>{status}</p>
+        <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-100 p-6">
+            <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-xl p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                    Live Premier League Data (API)
+                </h2>
+                {status && <p className="text-red-600 mb-2">{status}</p>}
 
-            {/* Toggle buttons */}
-            <div>
-                <button onClick={() => setView("scorers")} disabled={view === "scorers"}>
-                    Top Scorers
-                </button>
-                <button onClick={() => setView("standings")} disabled={view === "standings"}>
-                    Standings
-                </button>
-                <button onClick={() => setView("matches")} disabled={view === "matches"}>
-                    Matches
-                </button>
+                {/* Toggle buttons */}
+                <div className="flex gap-2 mb-6">
+                    <button
+                        className={`px-4 py-2 rounded-md font-medium ${
+                            view === "scorers"
+                                ? "bg-indigo-600 text-white"
+                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        }`}
+                        onClick={() => setView("scorers")}
+                        disabled={view === "scorers"}
+                    >
+                        Top Scorers
+                    </button>
+                    <button
+                        className={`px-4 py-2 rounded-md font-medium ${
+                            view === "standings"
+                                ? "bg-indigo-600 text-white"
+                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        }`}
+                        onClick={() => setView("standings")}
+                        disabled={view === "standings"}
+                    >
+                        Standings
+                    </button>
+                    <button
+                        className={`px-4 py-2 rounded-md font-medium ${
+                            view === "matches"
+                                ? "bg-indigo-600 text-white"
+                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        }`}
+                        onClick={() => setView("matches")}
+                        disabled={view === "matches"}
+                    >
+                        Matches
+                    </button>
+                </div>
+
+                {/* Render based on tab */}
+                {view === "scorers" ? (
+                    <PlayerList players={players} liveMode={true} />
+                ) : view === "standings" ? (
+                    <StandingsList standings={standings} />
+                ) : (
+                    <MatchesListLive matches={matches} />
+                )}
             </div>
-
-            {/* Render based on tab */}
-            {view === "scorers" ? (
-                <PlayerList players={players} liveMode={true} />
-            ) : view === "standings" ? (
-                <StandingsList standings={standings} />
-            ) : (
-                <MatchesListLive matches={matches} />
-            )}
         </div>
     );
 };
