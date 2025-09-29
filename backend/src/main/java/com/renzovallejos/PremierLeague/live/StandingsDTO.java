@@ -2,6 +2,7 @@ package com.renzovallejos.PremierLeague.live;
 
 public class StandingsDTO {
     private int position;
+    private Long teamId;
     private String teamName;
     private String crest;
     private int playedGames;
@@ -13,10 +14,11 @@ public class StandingsDTO {
     private int goalsAgainst;
     private int goalDifference;
 
-    public StandingsDTO(int position, String teamName, String crest,
+    public StandingsDTO(int position, Long teamId, String teamName, String crest,
                         int playedGames, int won, int draw, int lost,
                         int points, int goalsFor, int goalsAgainst, int goalDifference) {
         this.position = position;
+        this.teamId = teamId;
         this.teamName = teamName;
         this.crest = crest;
         this.playedGames = playedGames;
@@ -29,8 +31,8 @@ public class StandingsDTO {
         this.goalDifference = goalDifference;
     }
 
-    // Getters
     public int getPosition() { return position; }
+    public Long getTeamId() { return teamId; }
     public String getTeamName() { return teamName; }
     public String getCrest() { return crest; }
     public int getPlayedGames() { return playedGames; }
@@ -42,4 +44,3 @@ public class StandingsDTO {
     public int getGoalsAgainst() { return goalsAgainst; }
     public int getGoalDifference() { return goalDifference; }
 }
-

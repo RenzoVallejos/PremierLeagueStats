@@ -1,17 +1,8 @@
 /**
  * LiveApp.js
  *
- * This component acts as the main container for displaying live Premier League data
- * fetched from the Spring Boot backend (which in turn calls the Football-Data API).
- *
- * Features:
- * - Toggle between Top Scorers, Standings, and Live Matches using buttons.
- * - Fetches data from corresponding endpoints:
- *   - /api/live-scorers → top scorers
- *   - /api/standings → league table
- *   - /api/live-matches → live/past/upcoming matches
- * - Renders the correct child component (PlayerList, StandingsList, MatchesListLive)
- *   depending on the selected view.
+ * Main container for live Premier League data.
+ * - Tabs: Standings (left), Matches (middle), Top Scorers (right).
  */
 
 import React, { useEffect, useState } from "react";
@@ -26,7 +17,7 @@ const LiveApp = () => {
     const [standings, setStandings] = useState([]);
     const [matches, setMatches] = useState([]);
     const [status, setStatus] = useState("");
-    const [view, setView] = useState("scorers"); // default tab
+    const [view, setView] = useState("standings"); // default tab → Standings
 
     // Fetch live scorers
     const fetchLivePlayers = async () => {
@@ -61,7 +52,7 @@ const LiveApp = () => {
         }
     };
 
-    // Decide which fetch to call when the view changes
+    // Fetch data based on active view
     useEffect(() => {
         if (view === "scorers") {
             fetchLivePlayers();
@@ -75,47 +66,52 @@ const LiveApp = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-100 p-6">
             <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-xl p-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                    Live Premier League Data (API)
-                </h2>
-                {status && <p className="text-red-600 mb-2">{status}</p>}
+                {/* Header row with title on left and tabs on right */}
+                <div className="flex justify-between items-center border-b border-gray-200 mb-6">
+                    <h2 className="text-2xl font-bold text-gray-800 pb-2">
+                        Premier League 2025-2026
+                    </h2>
 
-                {/* Toggle buttons */}
-                <div className="flex gap-2 mb-6">
-                    <button
-                        className={`px-4 py-2 rounded-md font-medium ${
-                            view === "scorers"
-                                ? "bg-indigo-600 text-white"
-                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                        }`}
-                        onClick={() => setView("scorers")}
-                        disabled={view === "scorers"}
-                    >
-                        Top Scorers
-                    </button>
-                    <button
-                        className={`px-4 py-2 rounded-md font-medium ${
-                            view === "standings"
-                                ? "bg-indigo-600 text-white"
-                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                        }`}
-                        onClick={() => setView("standings")}
-                        disabled={view === "standings"}
-                    >
-                        Standings
-                    </button>
-                    <button
-                        className={`px-4 py-2 rounded-md font-medium ${
-                            view === "matches"
-                                ? "bg-indigo-600 text-white"
-                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                        }`}
-                        onClick={() => setView("matches")}
-                        disabled={view === "matches"}
-                    >
-                        Matches
-                    </button>
+                    <div className="flex space-x-6">
+                        {/* Standings first */}
+                        <button
+                            className={`pb-2 text-sm font-medium ${
+                                view === "standings"
+                                    ? "text-indigo-600 border-b-2 border-indigo-600"
+                                    : "text-gray-500 hover:text-gray-700"
+                            }`}
+                            onClick={() => setView("standings")}
+                        >
+                            Standings
+                        </button>
+
+                        {/* Matches in the middle */}
+                        <button
+                            className={`pb-2 text-sm font-medium ${
+                                view === "matches"
+                                    ? "text-indigo-600 border-b-2 border-indigo-600"
+                                    : "text-gray-500 hover:text-gray-700"
+                            }`}
+                            onClick={() => setView("matches")}
+                        >
+                            Matches
+                        </button>
+
+                        {/* Scorers last */}
+                        <button
+                            className={`pb-2 text-sm font-medium ${
+                                view === "scorers"
+                                    ? "text-indigo-600 border-b-2 border-indigo-600"
+                                    : "text-gray-500 hover:text-gray-700"
+                            }`}
+                            onClick={() => setView("scorers")}
+                        >
+                            Top Scorers
+                        </button>
+                    </div>
                 </div>
+
+                {status && <p className="text-red-600 mb-4">{status}</p>}
 
                 {/* Render based on tab */}
                 {view === "scorers" ? (

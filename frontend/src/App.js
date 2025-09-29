@@ -1,38 +1,58 @@
 /**
+ * App.js
  *
  * Root component of the Premier League App.
  *
- * - Acts as the entry point for the frontend React application.
- * - Provides a toggle between:
- *    1. LiveApp → Fetches live data (scorers, standings, matches) via API.
- *    2. CustomApp → Manages custom players and matches stored in Postgres.
- * - Maintains local state (`view`) to determine which app to render.
- * - Renders toggle buttons for switching between Live (API) and Custom (Postgres) modes.
+ * - Uses React Router to handle navigation.
+ * - `/` → Toggle between LiveApp (API) and CustomApp (Postgres).
+ * - `/team/:id` → Shows TeamRoster page for a selected team.
  */
+
 import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import CustomApp from "./custom/CustomApp";
 import LiveApp from "./live/LiveApp";
+import TeamRoster from "./live/TeamRoster";
 
 const App = () => {
     const [view, setView] = useState("live"); // default to Live API
 
     return (
-        <div>
-            <h1>Premier League App</h1>
+        <Router>
+            <Routes>
+                {/* Home route with toggle */}
+                <Route
+                    path="/"
+                    element={
+                        <div>
+                            <h1>Premier League App</h1>
 
-            {/* Toggle buttons */}
-            <div>
-                <button onClick={() => setView("live")} disabled={view === "live"}>
-                    Live (API)
-                </button>
-                <button onClick={() => setView("custom")} disabled={view === "custom"}>
-                    Custom (Postgres)
-                </button>
-            </div>
+                            {/* Toggle buttons */}
+                            <div>
+                                <button
+                                    onClick={() => setView("live")}
+                                    disabled={view === "live"}
+                                >
+                                    Live (API)
+                                </button>
+                                <button
+                                    onClick={() => setView("custom")}
+                                    disabled={view === "custom"}
+                                >
+                                    Custom (Postgres)
+                                </button>
+                            </div>
 
-            {/* Render correct app */}
-            {view === "custom" ? <CustomApp/> : <LiveApp/>}
-        </div>
+                            {/* Render correct app */}
+                            {view === "custom" ? <CustomApp /> : <LiveApp />}
+                        </div>
+                    }
+                />
+
+                {/* Team roster route */}
+                <Route path="/team/:id" element={<TeamRoster />} />
+            </Routes>
+        </Router>
     );
 };
 

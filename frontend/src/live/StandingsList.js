@@ -7,8 +7,10 @@
  * - Top 5 → Champions League (bg-green-50)
  * - 6th → Europa League (bg-yellow-50)
  * - Bottom 3 (18th–20th) → Relegation (bg-red-50)
+ * - Clicking a team redirects to /team/:id for roster view
  */
 import React from "react";
+import { Link } from "react-router-dom";
 
 const StandingsList = ({ standings }) => {
     // Decide row background based on position
@@ -65,23 +67,26 @@ const StandingsList = ({ standings }) => {
                     {standings.map((team, index) => (
                         <tr
                             key={index}
-                            className={`${getRowStyle(
-                                team.position
-                            )} hover:bg-gray-100`}
+                            className={`${getRowStyle(team.position)} hover:bg-gray-100`}
                         >
                             {/* Position */}
                             <td className="px-4 py-2 font-medium text-gray-900">
                                 {team.position}
                             </td>
 
-                            {/* Team with crest */}
+                            {/* Team with crest (clickable link) */}
                             <td className="px-4 py-2 flex items-center gap-2">
                                 <img
                                     src={team.crest}
                                     alt={team.teamName}
                                     className="w-6 h-6 object-contain"
                                 />
-                                {team.teamName}
+                                <Link
+                                    to={`/team/${team.teamId}`}
+                                    className="text-indigo-600 hover:underline"
+                                >
+                                    {team.teamName}
+                                </Link>
                             </td>
 
                             {/* Stats */}

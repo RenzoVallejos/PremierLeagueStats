@@ -2,6 +2,9 @@ package com.renzovallejos.PremierLeague.live;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,24 +21,20 @@ public class FootballApiService {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    //  Constructor injection: easier to mock in tests
     public FootballApiService(RestTemplate restTemplate, ObjectMapper objectMapper) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
     }
 
-    // ================================
-    // GET TOP SCORERS
-    // ================================
     public List<PlayerDTO> getTopScorers() {
         try {
-            var headers = new org.springframework.http.HttpHeaders();
+            var headers = new HttpHeaders();
             headers.set("X-Auth-Token", API_TOKEN);
-            var entity = new org.springframework.http.HttpEntity<>(headers);
+            var entity = new HttpEntity<>(headers);
 
             var response = restTemplate.exchange(
                     "https://api.football-data.org/v4/competitions/PL/scorers",
-                    org.springframework.http.HttpMethod.GET,
+                    HttpMethod.GET,
                     entity,
                     String.class
             );
@@ -48,15 +47,12 @@ public class FootballApiService {
             for (JsonNode s : scorers) {
                 String name = s.get("player").get("name").asText();
                 String teamName = s.get("team").get("name").asText();
-
                 String teamCrest = s.get("team").has("crest")
                         ? s.get("team").get("crest").asText()
                         : null;
-
                 String position = s.get("player").has("position")
                         ? s.get("player").get("position").asText()
                         : "N/A";
-
                 String nation = s.get("player").has("nationality")
                         ? s.get("player").get("nationality").asText()
                         : "N/A";
@@ -86,18 +82,15 @@ public class FootballApiService {
         }
     }
 
-    // ================================
-    // GET STANDINGS
-    // ================================
     public List<StandingsDTO> getStandings() {
         try {
-            var headers = new org.springframework.http.HttpHeaders();
+            var headers = new HttpHeaders();
             headers.set("X-Auth-Token", API_TOKEN);
-            var entity = new org.springframework.http.HttpEntity<>(headers);
+            var entity = new HttpEntity<>(headers);
 
             var response = restTemplate.exchange(
                     "https://api.football-data.org/v4/competitions/PL/standings",
-                    org.springframework.http.HttpMethod.GET,
+                    HttpMethod.GET,
                     entity,
                     String.class
             );
@@ -108,6 +101,7 @@ public class FootballApiService {
             List<StandingsDTO> standings = new ArrayList<>();
             for (JsonNode t : table) {
                 int position = t.get("position").asInt();
+                Long teamId = t.get("team").get("id").asLong();
                 String teamName = t.get("team").get("name").asText();
                 String crest = t.get("team").get("crest").asText();
                 int playedGames = t.get("playedGames").asInt();
@@ -119,9 +113,11 @@ public class FootballApiService {
                 int goalsAgainst = t.get("goalsAgainst").asInt();
                 int goalDifference = t.get("goalDifference").asInt();
 
-                standings.add(new StandingsDTO(position, teamName, crest,
+                standings.add(new StandingsDTO(
+                        position, teamId, teamName, crest,
                         playedGames, won, draw, lost, points,
-                        goalsFor, goalsAgainst, goalDifference));
+                        goalsFor, goalsAgainst, goalDifference
+                ));
             }
             return standings;
 
@@ -131,18 +127,15 @@ public class FootballApiService {
         }
     }
 
-    // ================================
-    // GET MATCHES (LIVE + UPCOMING)
-    // ================================
     public List<MatchDTO> getMatches() {
         try {
-            var headers = new org.springframework.http.HttpHeaders();
+            var headers = new HttpHeaders();
             headers.set("X-Auth-Token", API_TOKEN);
-            var entity = new org.springframework.http.HttpEntity<>(headers);
+            var entity = new HttpEntity<>(headers);
 
             var response = restTemplate.exchange(
                     "https://api.football-data.org/v4/competitions/PL/matches",
-                    org.springframework.http.HttpMethod.GET,
+                    HttpMethod.GET,
                     entity,
                     String.class
             );
@@ -157,12 +150,16 @@ public class FootballApiService {
                 String status = m.get("status").asText();
 
                 String homeTeam = m.get("homeTeam").get("name").asText();
-                String homeCrest = m.get("homeTeam").has("crest") ? m.get("homeTeam").get("crest").asText() : null;
+                String homeCrest = m.get("homeTeam").has("crest")
+                        ? m.get("homeTeam").get("crest").asText()
+                        : null;
                 Integer homeScore = m.get("score").get("fullTime").get("home").isNull()
                         ? null : m.get("score").get("fullTime").get("home").asInt();
 
                 String awayTeam = m.get("awayTeam").get("name").asText();
-                String awayCrest = m.get("awayTeam").has("crest") ? m.get("awayTeam").get("crest").asText() : null;
+                String awayCrest = m.get("awayTeam").has("crest")
+                        ? m.get("awayTeam").get("crest").asText()
+                        : null;
                 Integer awayScore = m.get("score").get("fullTime").get("away").isNull()
                         ? null : m.get("score").get("fullTime").get("away").asInt();
 
@@ -178,6 +175,63 @@ public class FootballApiService {
         } catch (Exception e) {
             e.printStackTrace();
             return List.of();
+        }
+    }
+
+    public TeamDTO getTeamById(Long teamId) {
+        try {
+            var headers = new HttpHeaders();
+            headers.set("X-Auth-Token", API_TOKEN);
+            var entity = new HttpEntity<>(headers);
+
+            var response = restTemplate.exchange(
+                    "https://api.football-data.org/v4/teams/" + teamId,
+                    HttpMethod.GET,
+                    entity,
+                    String.class
+            );
+
+            JsonNode root = objectMapper.readTree(response.getBody());
+
+            TeamDTO team = new TeamDTO();
+            team.setId(root.get("id").asLong());
+            team.setName(root.get("name").asText());
+            team.setCrest(root.has("crest") ? root.get("crest").asText() : null);
+
+            List<PlayerDTO> squad = new ArrayList<>();
+            if (root.has("squad")) {
+                for (JsonNode p : root.get("squad")) {
+                    String name = p.get("name").asText();
+                    String position = p.has("position") && !p.get("position").isNull()
+                            ? p.get("position").asText()
+                            : "N/A";
+                    String nation = p.has("nationality") ? p.get("nationality").asText() : "N/A";
+
+                    Integer age = null;
+                    if (p.has("dateOfBirth") && !p.get("dateOfBirth").isNull()) {
+                        LocalDate dob = LocalDate.parse(p.get("dateOfBirth").asText());
+                        age = Period.between(dob, LocalDate.now()).getYears();
+                    }
+
+                    squad.add(new PlayerDTO(
+                            name,
+                            team.getName(),
+                            team.getCrest(),
+                            position,
+                            nation,
+                            age,
+                            0,
+                            0
+                    ));
+                }
+            }
+
+            team.setSquad(squad);
+            return team;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
