@@ -150,6 +150,7 @@ public class FootballApiService {
                 String status = m.get("status").asText();
 
                 String homeTeam = m.get("homeTeam").get("name").asText();
+                Long homeTeamId = m.get("homeTeam").get("id").asLong();
                 String homeCrest = m.get("homeTeam").has("crest")
                         ? m.get("homeTeam").get("crest").asText()
                         : null;
@@ -157,6 +158,7 @@ public class FootballApiService {
                         ? null : m.get("score").get("fullTime").get("home").asInt();
 
                 String awayTeam = m.get("awayTeam").get("name").asText();
+                Long awayTeamId = m.get("awayTeam").get("id").asLong();
                 String awayCrest = m.get("awayTeam").has("crest")
                         ? m.get("awayTeam").get("crest").asText()
                         : null;
@@ -165,8 +167,8 @@ public class FootballApiService {
 
                 matches.add(new MatchDTO(
                         id, utcDate, status,
-                        homeTeam, homeCrest, homeScore,
-                        awayTeam, awayCrest, awayScore
+                        homeTeamId, homeTeam, homeCrest, homeScore,
+                        awayTeamId, awayTeam, awayCrest, awayScore
                 ));
             }
 

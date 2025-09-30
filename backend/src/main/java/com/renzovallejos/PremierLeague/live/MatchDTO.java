@@ -12,10 +12,12 @@ public class MatchDTO {
     private String utcDate;
     private String status;
 
+    private Long homeTeamId;
     private String homeTeamName;
     private String homeTeamCrest;
     private Integer homeScore;
 
+    private Long awayTeamId;
     private String awayTeamName;
     private String awayTeamCrest;
     private Integer awayScore;
