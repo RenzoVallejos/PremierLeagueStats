@@ -1,0 +1,52 @@
+# Backend CI Pipeline
+# Runs unit tests for Spring Boot backend on every push and pull request
+# Prevents deployment of broken code by running tests before Render deployment
+
+name: Backend CI
+
+# Trigger the workflow on push to main branch and all pull requests
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'backend/**' ]  # Only run when backend code changes
+  pull_request:
+    branches: [ main ]
+    paths: [ 'backend/**' ]
+
+jobs:
+  test:
+    name: Run Backend Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    # Checkout the repository code
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    # Set up Java 21 (matches your project version)
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+    
+    # Cache Maven dependencies for faster builds
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+    
+    # Navigate to backend directory and run tests
+    - name: Run Maven tests
+      working-directory: ./backend
+      run: ./mvnw clean test
+    
+    # Upload test results (optional - for viewing test reports)
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      if: always()  # Upload even if tests fail
+      with:
+        name: test-results
+        path: backend/target/surefire-reports/
