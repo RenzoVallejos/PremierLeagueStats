@@ -64,8 +64,8 @@ const LiveApp = () => {
     }, [view]);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-100 p-6">
-            <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-xl p-6">
+        <div className="max-w-6xl mx-auto px-6">
+            <div className="bg-white shadow-lg rounded-xl p-6">
                 {/* Header row with title on left and tabs on right */}
                 <div className="flex justify-between items-center border-b border-gray-200 mb-6">
                     <h2 className="text-2xl font-bold text-gray-800 pb-2">
